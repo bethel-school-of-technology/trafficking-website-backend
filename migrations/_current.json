@@ -1,0 +1,48 @@
+{
+    "tables": {
+        "businesses": {
+            "tableName": "businesses",
+            "schema": {
+                "BusinessId": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "BusinessId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "ContactName": {
+                    "field": "ContactName",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Email": {
+                    "field": "Email",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Username": {
+                    "field": "Username",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Password": {
+                    "field": "Password",
+                    "seqType": "Sequelize.STRING"
+                },
+                "BusinessURL": {
+                    "field": "BusinessURL",
+                    "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        }
+    },
+    "revision": 1
+}
