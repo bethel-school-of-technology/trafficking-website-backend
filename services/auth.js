@@ -16,7 +16,9 @@ var authService = {
     verifyUser: function (token) {
         try {
             let decoded = jwt.verify(token, 'secretkey');
-            return models.businesses.findByPk(decoded.BusinessId);
+            console.log("DECODED")
+            console.log(decoded);
+            return models.businesses.findByPk(decoded.UserId);
         } catch (err) {
             console.log(err);
             return null;

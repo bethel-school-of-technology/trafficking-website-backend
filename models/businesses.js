@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class businesses extends Model {
 
     static associate(models) {
-
+      businesses.hasMany(models.Testimonials, { foreignKey: "BusinessId"})
     }
   };
   businesses.init({
@@ -20,7 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     Email: DataTypes.STRING,
     Username: DataTypes.STRING,
     Password: DataTypes.STRING,
-    BusinessURL: DataTypes.STRING
+    BusinessURL: DataTypes.STRING,
+    Admin: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'businesses',

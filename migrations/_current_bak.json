@@ -30,10 +30,6 @@
                     "field": "BusinessURL",
                     "seqType": "Sequelize.STRING"
                 },
-                "Admin": {
-                    "field": "Admin",
-                    "seqType": "Sequelize.BOOLEAN"
-                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
@@ -98,5 +94,5 @@
             "indexes": []
         }
     },
-    "revision": 5
+    "revision": 4
 }

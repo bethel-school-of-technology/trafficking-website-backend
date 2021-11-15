@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "S3ahawk5Rule20219901",
+    "password":"S3ahawk5Rule20219901",
     "database": "Businesses",
     "host": "127.0.0.1",
     "dialect": "mysql"
