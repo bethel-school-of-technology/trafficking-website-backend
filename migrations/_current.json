@@ -14,11 +14,18 @@
                     "field": "ContactName",
                     "seqType": "Sequelize.STRING"
                 },
+                "OrganizationName": {
+                    "unique": true,
+                    "field": "OrganizationName",
+                    "seqType": "Sequelize.STRING"
+                },
                 "Email": {
+                    "unique": true,
                     "field": "Email",
                     "seqType": "Sequelize.STRING"
                 },
                 "Username": {
+                    "unique": true,
                     "field": "Username",
                     "seqType": "Sequelize.STRING"
                 },
@@ -73,15 +80,20 @@
                     "field": "Approved",
                     "seqType": "Sequelize.DATE"
                 },
+                "Declined": {
+                    "field": "Declined",
+                    "seqType": "Sequelize.DATE"
+                },
+                "Deleted": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "field": "Deleted",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
                 "BusinessId": {
                     "field": "BusinessId",
                     "allowNull": true,
-                    "references": {
-                        "model": "businesses",
-                        "key": "BusinessId"
-                    },
-                    "onDelete": "CASCADE",
-                    "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "createdAt": {
@@ -98,5 +110,5 @@
             "indexes": []
         }
     },
-    "revision": 5
+    "revision": 1
 }

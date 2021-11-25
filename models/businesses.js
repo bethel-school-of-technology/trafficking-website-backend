@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class businesses extends Model {
 
     static associate(models) {
-      businesses.hasMany(models.Testimonials, { foreignKey: "BusinessId"})
+      businesses.hasMany(models.Testimonials, { constraints:false,foreignKey: "BusinessId"})
     }
   };
   businesses.init({
@@ -16,9 +16,20 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       primaryKey: true,
     },
-    ContactName: DataTypes.STRING,
-    Email: DataTypes.STRING,
-    Username: DataTypes.STRING,
+    ContactName:
+      DataTypes.STRING,
+    OrganizationName: {
+    type: DataTypes.STRING,
+    unique: true
+    },
+    Email: {
+    type: DataTypes.STRING,
+    unique: true
+    },
+    Username: {
+      type: DataTypes.STRING,
+      unique: true
+    },
     Password: DataTypes.STRING,
     BusinessURL: DataTypes.STRING,
     Admin: DataTypes.BOOLEAN,
