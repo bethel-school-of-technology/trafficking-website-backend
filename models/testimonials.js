@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Testimonials extends Model {
   
     static associate(models) { 
-      Testimonials.belongsTo(models.businesses, {as: "Business", foreignKey: "BusinessId"})
+      Testimonials.hasOne(models.businesses, {as: "Business",constraints: false, foreignKey: "BusinessId"})
         // foreignKey: "BusinessId",  targetKey: "BusinessId"})
     }
   };
@@ -21,6 +21,11 @@ module.exports = (sequelize, DataTypes) => {
     Title: DataTypes.STRING,
     Body: DataTypes.STRING,
     Approved: DataTypes.DATE,
+    Declined:DataTypes.DATE,
+    Deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue:false
+    },
     BusinessId: DataTypes.INTEGER
   }, {
     sequelize,

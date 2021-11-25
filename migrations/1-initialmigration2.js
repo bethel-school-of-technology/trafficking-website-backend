@@ -6,14 +6,14 @@ var Sequelize = require('sequelize');
  * Actions summary:
  *
  * createTable "businesses", deps: []
- * createTable "Testimonials", deps: [businesses]
+ * createTable "Testimonials", deps: []
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "fixed",
-    "created": "2021-11-14T00:57:49.211Z",
+    "name": "initialmigration2",
+    "created": "2021-11-25T19:27:31.216Z",
     "comment": ""
 };
 
@@ -33,13 +33,20 @@ var migrationCommands = [{
                     "type": Sequelize.STRING,
                     "field": "ContactName"
                 },
+                "OrganizationName": {
+                    "type": Sequelize.STRING,
+                    "field": "OrganizationName",
+                    "unique": true
+                },
                 "Email": {
                     "type": Sequelize.STRING,
-                    "field": "Email"
+                    "field": "Email",
+                    "unique": true
                 },
                 "Username": {
                     "type": Sequelize.STRING,
-                    "field": "Username"
+                    "field": "Username",
+                    "unique": true
                 },
                 "Password": {
                     "type": Sequelize.STRING,
@@ -48,6 +55,10 @@ var migrationCommands = [{
                 "BusinessURL": {
                     "type": Sequelize.STRING,
                     "field": "BusinessURL"
+                },
+                "Admin": {
+                    "type": Sequelize.BOOLEAN,
+                    "field": "Admin"
                 },
                 "createdAt": {
                     "type": Sequelize.DATE,
@@ -75,6 +86,10 @@ var migrationCommands = [{
                     "autoIncrement": true,
                     "allowNull": false
                 },
+                "Synopsis": {
+                    "type": Sequelize.STRING,
+                    "field": "Synopsis"
+                },
                 "Title": {
                     "type": Sequelize.STRING,
                     "field": "Title"
@@ -84,17 +99,20 @@ var migrationCommands = [{
                     "field": "Body"
                 },
                 "Approved": {
-                    "type": Sequelize.BOOLEAN,
+                    "type": Sequelize.DATE,
                     "field": "Approved"
+                },
+                "Declined": {
+                    "type": Sequelize.DATE,
+                    "field": "Declined"
+                },
+                "Deleted": {
+                    "type": Sequelize.BOOLEAN,
+                    "field": "Deleted",
+                    "defaultValue": false
                 },
                 "BusinessId": {
                     "type": Sequelize.INTEGER,
-                    "onUpdate": "CASCADE",
-                    "onDelete": "CASCADE",
-                    "references": {
-                        "model": "businesses",
-                        "key": "BusinessId"
-                    },
                     "allowNull": true,
                     "field": "BusinessId"
                 },
