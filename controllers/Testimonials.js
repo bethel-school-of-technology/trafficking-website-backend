@@ -32,17 +32,45 @@ exports.Testimonials_CreatePost = (req, res, next) => {
         });
 };
 
-exports.Testimonials_AdminApproval = (req,res,next) => {
-    let testimonyId= req.params.id;
+exports.Testimonials_AdminApproval = (req, res, next) => {
+    let testimonyId = req.params.id;
     let token = req.cookies.jwt;
     authService.verifyUser(token)
         .then(user => {
             if (user.Admin) {
                 models.Testimonials.update(
-                    { Approved: new Date()},
+                    { Approved: new Date() },
                     { where: { testimonyId: testimonyId } })
             } else {
                 res.send('You are not authorized to approve this message');
+            };
+        });
+};
+exports.Testimonials_delete = (req, res, next) => {
+    let testimonyId = req.params.id;
+    let token = req.cookies.jwt;
+    authService.verifyUser(token)
+        .then(user => {
+            if (user.Admin) {
+                models.Testimonials.update(
+                    { Deleted: true},
+                    { where: { testimonyId: testimonyId } })
+            } else {
+                res.send('You are not authorized to delete this message');
+            };
+        });
+};
+exports.Testimonials_AdminRejection = (req,res,next) => {
+    let testimonyId = req.params.id;
+    let token = req.cookies.jwt;
+    authService.verifyUser(token)
+        .then(user => {
+            if (user.Admin) {
+                models.Testimonials.update(
+                    { Declined: new Date() },
+                    { where: { testimonyId: testimonyId } })
+            } else {
+                res.send('You are not authorized to decline this message');
             };
         });
 };

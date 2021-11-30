@@ -3,6 +3,7 @@ var router = express.Router();
 var models = require('../models');
 var mysql = require('mysql2')
 var authService = require('../services/auth');
+const { DATE } = require('sequelize');
 
 exports.businessess_sign_up = (req, res, next) => {
     console.log(req.body);
@@ -21,7 +22,8 @@ exports.businessess_sign_up = (req, res, next) => {
                     ContactName: req.body.ContactName,
                     Email: req.body.Email,
                     Password: authService.hashPassword(req.body.Password),
-                    BusinessURL: req.body.BusinessURL
+                    BusinessURL: req.body.BusinessURL,
+                    OrganizationName: req.body.OrganizationName,
                 }
             })
             .spread(function (result, created) {
@@ -64,13 +66,14 @@ exports.businesses_login = (req, res, next) => {
 };
 exports.businesses_getAll = (req, res, next) => {
     models.businesses.findAll({
-        where: { admin: null },
+        where: { admin: null},
         attributes: ["OrganizationName", "BusinessURL"],
         include: [
             {
                 model: models.Testimonials,
                 required: false,
-                attributes: ["Title", "Synopsis", "Body"]
+                attributes: ["Title", "Synopsis", "Body"],
+                where: {Deleted: false}
             }]
     }).then(BusinessesFound => {
         res.setHeader('Content-Type', 'application/json');
@@ -81,3 +84,24 @@ exports.businesses_logout = (req, res, next) => {
     res.cookie('jwt', "", { expires: new Date(0) });
     res.send('logged out');
 }
+exports.businesses_profile = (req, res, next) => {
+   let token = req.cookies.jwt;
+  authService.verifyUser(token)
+    .then(user => {
+      models.businesses.findOne({
+          where: {
+              Username: user.Username,
+          },
+          attributes: ["ContactName", "OrganizationName", "Username"],
+          include: [
+              {
+                  model: models.Testimonials,
+                  required: false,
+                  attributes: ["Title", "Body", "Synopsis"]
+              }
+          ]
+      }).then(userFound => {
+          res.send(userFound);
+      });
+    });
+};

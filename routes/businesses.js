@@ -15,6 +15,9 @@ router.post('/login',businessesController.businesses_login);
 router.get('/organizations', businessesController.businesses_getAll);
 //logout route
 router.get('/logout', businessesController.businesses_logout);
+//Profile route
+router.get('/profile', businessesController.businesses_profile);
+
 
 
 
