@@ -17,6 +17,10 @@ router.get('/organizations', businessesController.businesses_getAll);
 router.get('/logout', businessesController.businesses_logout);
 //Profile route
 router.get('/profile', businessesController.businesses_profile);
+//admin page 
+router.get('/admin', businessesController.Businesses_Admin);
+//update your Profile
+router.put('/profile/:id', businessesController.businesses_profile_update);
 
 
 

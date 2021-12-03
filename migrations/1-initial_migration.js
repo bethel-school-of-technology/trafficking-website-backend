@@ -12,8 +12,8 @@ var Sequelize = require('sequelize');
 
 var info = {
     "revision": 1,
-    "name": "initialmiggg",
-    "created": "2021-11-26T04:43:04.183Z",
+    "name": "initial_migration",
+    "created": "2021-12-03T00:00:28.593Z",
     "comment": ""
 };
 
@@ -59,6 +59,10 @@ var migrationCommands = [{
                 "Admin": {
                     "type": Sequelize.BOOLEAN,
                     "field": "Admin"
+                },
+                "ZipCode": {
+                    "type": Sequelize.INTEGER,
+                    "field": "ZipCode"
                 },
                 "createdAt": {
                     "type": Sequelize.DATE,
