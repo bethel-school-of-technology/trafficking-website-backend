@@ -41,6 +41,10 @@
                     "field": "Admin",
                     "seqType": "Sequelize.BOOLEAN"
                 },
+                "ZipCode": {
+                    "field": "ZipCode",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "createdAt": {
                     "allowNull": false,
                     "field": "createdAt",
