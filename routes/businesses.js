@@ -21,6 +21,8 @@ router.get('/profile', businessesController.businesses_profile);
 router.get('/admin', businessesController.Businesses_Admin);
 //update your Profile
 router.put('/profile/:id', businessesController.businesses_profile_update);
+//finds orgs by zip code.
+router.get('/getinvolved', businessesController.businesses_findbyZip);
 
 
 
