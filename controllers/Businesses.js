@@ -153,20 +153,40 @@ exports.Businesses_Admin = (req, res, next) => {
 exports.businesses_profile_update = (req, res, next) => {
   let token = req.cookies.jwt;
   authService.verifyUser(token).then((user) => {
-      console.log(user);
-      models.businesses
-        .update(
-          {
-            ContactName: req.body.ContactName,
-            OrganizationName: req.body.OrganizationName,
-            Username: req.body.Username,
-            BusinessURL: req.body.BusinessURL,
-            ZipCode: req.body.ZipCode,
-          },
-          { where: { BusinessId: req.params.id } }
-        )
-        .then((updatedProfile) => {
-          res.json(updatedProfile);
-        });
+    models.businesses
+      .update(
+        {
+          ContactName: req.body.ContactName,
+          OrganizationName: req.body.OrganizationName,
+          Username: req.body.Username,
+          BusinessURL: req.body.BusinessURL,
+          ZipCode: req.body.ZipCode,
+        },
+        { where: { BusinessId: req.params.id } }
+      )
+      .then((updatedProfile) => {
+        res.send(JSON.stringify(updatedProfile));
+      });
   });
+};
+exports.businesses_findbyZip = (req,res,next) => {
+    models.businesses 
+        .findAll({
+            where: {ZipCode: req.body.ZipCode},
+            attributes: ["ContactName", "OrganizationName", "BusinessURL"],
+        include: [
+            {
+                model: model.Testimonials,
+                required: false,
+                attributes: ["Title", "Synopsis", "Body"],
+            }
+        ]
+        }).then(BusinessesFound => {
+            if(BusinessesFound){
+                res.send(JSON.stringify(BusinessesFound));
+            }else{
+                res.send('There are no organizations that match that have that as their Zip Code.');
+            }
+            
+        });
 };
