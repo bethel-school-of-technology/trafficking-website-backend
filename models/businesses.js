@@ -33,7 +33,11 @@ module.exports = (sequelize, DataTypes) => {
     Password: DataTypes.STRING,
     BusinessURL: DataTypes.STRING,
     Admin: DataTypes.BOOLEAN,
-    ZipCode: DataTypes.INTEGER
+    ZipCode: DataTypes.INTEGER,
+    Deleted: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   }, {
     sequelize,
     modelName: 'businesses',
