@@ -4,11 +4,13 @@ var models = require('../models');
 var mysql = require('mysql2')
 var authService = require('../services/auth');
 const businessesController = require('../controllers/Businesses');
+const cors = require('cors');
+
 router.get('/', function (req, res, next) {
     res.send('respond with a resource');
 });
 //signup route
-router.post('/signup', businessesController.businessess_sign_up);
+router.post('/signup',cors(), businessesController.businessess_sign_up);
 //login route
 router.post('/login',businessesController.businesses_login);
 //get all businesses route
@@ -23,6 +25,8 @@ router.get('/admin', businessesController.Businesses_Admin);
 router.put('/profile/:id', businessesController.businesses_profile_update);
 //finds orgs by zip code.
 router.get('/getinvolved', businessesController.businesses_findbyZip);
+//admin delete user
+router.get('/admin/deleteuser/:id', businessesController.adminDeleteUser);
 
 
 

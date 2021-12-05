@@ -169,24 +169,41 @@ exports.businesses_profile_update = (req, res, next) => {
       });
   });
 };
-exports.businesses_findbyZip = (req,res,next) => {
-    models.businesses 
-        .findAll({
-            where: {ZipCode: req.body.ZipCode},
-            attributes: ["ContactName", "OrganizationName", "BusinessURL"],
-        include: [
-            {
-                model: model.Testimonials,
-                required: false,
-                attributes: ["Title", "Synopsis", "Body"],
-            }
-        ]
-        }).then(BusinessesFound => {
-            if(BusinessesFound){
-                res.send(JSON.stringify(BusinessesFound));
-            }else{
-                res.send('There are no organizations that match that have that as their Zip Code.');
-            }
-            
-        });
+exports.businesses_findbyZip = (req, res, next) => {
+  models.businesses
+    .findAll({
+      where: { ZipCode: req.body.ZipCode },
+      attributes: ["ContactName", "OrganizationName", "BusinessURL"],
+      include: [
+        {
+          model: model.Testimonials,
+          required: false,
+          attributes: ["Title", "Synopsis", "Body"],
+        },
+      ],
+    })
+    .then((BusinessesFound) => {
+      if (BusinessesFound) {
+        res.send(JSON.stringify(BusinessesFound));
+      } else {
+        res.send(
+          "There are no organizations that match that have that as their Zip Code."
+        );
+      }
+    });
 };
+exports.adminDeleteUser = (req,res,next) => {
+  let token = req.cookies.jwt;
+  let BusinessId = req.params.id;
+    authService.verifyUser(token)
+        .then(user => {
+          if(user.Admin){
+            models.businesses.update(
+              {Deleted: true},
+              {where: {BusinessId: BusinessId}}
+            )
+          }else{
+            res.send('You are not permitted to delete this user.')
+          }
+        })
+}
