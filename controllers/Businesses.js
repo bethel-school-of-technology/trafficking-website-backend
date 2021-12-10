@@ -5,6 +5,11 @@ var mysql = require("mysql2");
 var authService = require("../services/auth");
 const { DATE } = require("sequelize");
 
+exports.test = (req, res, next) => {
+  console.log(req.profile)
+  res.json({message :"OK", admin: req.header.admin, username: req.header.username })
+}
+
 exports.businessess_sign_up = (req, res, next) => {
   console.log(req.body);
   const regexPassword = /^(?=[^a-z]*[a-z])(?=\D*\d)[^:&.~\s]{5,20}$/;
@@ -68,9 +73,16 @@ exports.businesses_login = (req, res, next) => {
         if (passwordMatches) {
           let token = authService.signUser(business);
           res.cookie("jwt", token);
-          res.send("Login Successful!");
+          res.status(200).json({
+            message: "login successful",
+            organization: business,
+            token: token,
+          });
+          // res.status(200);
+          // res.send("Login Successful!");
         } else {
           console.log("Invalid password, please try again.");
+          res.status(401);
           res.send("Wrong Password, try again.");
         }
       }
@@ -92,20 +104,24 @@ exports.businesses_getAll = (req, res, next) => {
     })
     .then((BusinessesFound) => {
       res.setHeader("Content-Type", "application/json");
-      res.send(JSON.stringify(BusinessesFound));
+      res.status(200).json({
+        message: "data:",
+        business: BusinessesFound,
+      });
     });
 };
 exports.businesses_logout = (req, res, next) => {
   res.cookie("jwt", "", { expires: new Date(0) });
   res.send("logged out");
 };
+//profile
 exports.businesses_profile = (req, res, next) => {
-  let token = req.cookies.jwt;
-  authService.verifyUser(token).then((user) => {
+  let username = req.profile.username;
+  if (username) {
     models.businesses
       .findOne({
         where: {
-          Username: user.Username,
+          Username: username,
         },
         attributes: ["ContactName", "OrganizationName", "Username"],
         include: [
@@ -117,42 +133,50 @@ exports.businesses_profile = (req, res, next) => {
         ],
       })
       .then((userFound) => {
-        res.send(userFound);
-      });
-  });
-};
-exports.Businesses_Admin = (req, res, next) => {
-  let token = req.cookies.jwt;
-  authService.verifyUser(token).then((user) => {
-    if (user.Admin) {
-      models.businesses
-        .findAll({
-          where: { Admin: null },
-          attributes: [
-            "BusinessId",
-            "ContactName",
-            "OrganizationName",
-            "Username",
-          ],
-          include: [
-            {
-              model: models.Testimonials,
-              required: false,
-              attributes: ["Title", "Body", "Synopsis"],
-            },
-          ],
-        })
-        .then((usersFound) => {
-          res.send(JSON.stringify(usersFound));
+        res.json({
+          message: "here is profile",
+          user: userFound,
         });
-    } else {
-      res.send("You are not an admin.");
-    }
-  });
+      });
+  } else {
+    res.json({
+      message: "User profile not found",
+    });
+  }
 };
+exports.businesses_Admin = (req, res, next) => {
+  let admin = req.profile.admin;
+  console.log("admin " + admin);
+  if (admin) {
+    models.businesses
+      .findAll({
+        where: { Admin: null },
+        attributes: [
+          "BusinessId",
+          "ContactName",
+          "OrganizationName",
+          "Username",
+        ],
+        include: [
+          {
+            model: models.Testimonials,
+            required: false,
+            attributes: ["Title", "Body", "Synopsis"],
+          },
+        ],
+      })
+      .then((usersFound) => {
+        res.send(JSON.stringify(usersFound));
+      });
+  } else {
+    res.json({
+      message: "not auth",
+    });
+  }
+};
+
 exports.businesses_profile_update = (req, res, next) => {
-  let token = req.cookies.jwt;
-  authService.verifyUser(token).then((user) => {
+  let businessId = req.profile.businessId;
     models.businesses
       .update(
         {
@@ -162,12 +186,11 @@ exports.businesses_profile_update = (req, res, next) => {
           BusinessURL: req.body.BusinessURL,
           ZipCode: req.body.ZipCode,
         },
-        { where: { BusinessId: req.params.id } }
+        { where: { BusinessId: businessId } }
       )
       .then((updatedProfile) => {
         res.send(JSON.stringify(updatedProfile));
       });
-  });
 };
 exports.businesses_findbyZip = (req, res, next) => {
   models.businesses
@@ -192,18 +215,17 @@ exports.businesses_findbyZip = (req, res, next) => {
       }
     });
 };
-exports.adminDeleteUser = (req,res,next) => {
+exports.adminDeleteUser = (req, res, next) => {
   let token = req.cookies.jwt;
   let BusinessId = req.params.id;
-    authService.verifyUser(token)
-        .then(user => {
-          if(user.Admin){
-            models.businesses.update(
-              {Deleted: true},
-              {where: {BusinessId: BusinessId}}
-            )
-          }else{
-            res.send('You are not permitted to delete this user.')
-          }
-        })
-}
+  authService.verifyUser(token).then((user) => {
+    if (user.Admin) {
+      models.businesses.update(
+        { Deleted: true },
+        { where: { BusinessId: BusinessId } }
+      );
+    } else {
+      res.send("You are not permitted to delete this user.");
+    }
+  });
+};
