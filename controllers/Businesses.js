@@ -216,10 +216,10 @@ exports.businesses_findbyZip = (req, res, next) => {
     });
 };
 exports.adminDeleteUser = (req, res, next) => {
-  let token = req.cookies.jwt;
+ let admin = req.profile.admin;
   let BusinessId = req.params.id;
-  authService.verifyUser(token).then((user) => {
-    if (user.Admin) {
+  
+    if (admin) {
       models.businesses.update(
         { Deleted: true },
         { where: { BusinessId: BusinessId } }
@@ -227,5 +227,5 @@ exports.adminDeleteUser = (req, res, next) => {
     } else {
       res.send("You are not permitted to delete this user.");
     }
-  });
+ 
 };
