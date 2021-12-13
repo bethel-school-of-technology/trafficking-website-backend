@@ -7,6 +7,9 @@ const authMiddleware = require("../middlewares/auth");
 const TestimonialsController = require('../controllers/Testimonials');
 //create post route
 router.post('/posts', authMiddleware.verify, TestimonialsController.Testimonials_CreatePost);
+router.get('/posts/approved', authMiddleware.verify, TestimonialsController.testimonials_adminpage_approved);
+router.get('/posts/declined', authMiddleware.verify, TestimonialsController.testimonials_adminpage_declined);
+router.get('/posts/deleted', authMiddleware.verify, TestimonialsController.testimonials_adminpage_deleted)
 router.get('/posts/:id/approval', authMiddleware.verify, TestimonialsController.Testimonials_AdminApproval);
 router.get('/posts/:id/decline',authMiddleware.verify, TestimonialsController.Testimonials_AdminRejection);
 router.get('/posts/:id/delete', authMiddleware.verify, TestimonialsController.Testimonials_delete);

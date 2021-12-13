@@ -3,7 +3,7 @@ var router = express.Router();
 var models = require("../models");
 var mysql = require("mysql2");
 var authService = require("../services/auth");
-const { DATE } = require("sequelize");
+const { Op } = require('sequelize') 
 
 exports.test = (req, res, next) => {
   console.log(req.profile)
@@ -161,12 +161,15 @@ exports.businesses_Admin = (req, res, next) => {
           {
             model: models.Testimonials,
             required: false,
-            attributes: ["Title", "Body", "Synopsis"],
+            attributes: ["testimonyId", "Title", "Body", "Synopsis"],
           },
         ],
       })
       .then((usersFound) => {
-        res.send(JSON.stringify(usersFound));
+        res.json({
+          message: "Admin info:",
+          business: usersFound
+        })
       });
   } else {
     res.json({
@@ -189,7 +192,10 @@ exports.businesses_profile_update = (req, res, next) => {
         { where: { BusinessId: businessId } }
       )
       .then((updatedProfile) => {
-        res.send(JSON.stringify(updatedProfile));
+        res.json({
+          message: 'successfully updated profile',
+          profile: updatedProfile
+        });
       });
 };
 exports.businesses_findbyZip = (req, res, next) => {
@@ -201,7 +207,7 @@ exports.businesses_findbyZip = (req, res, next) => {
         {
           model: model.Testimonials,
           required: false,
-          attributes: ["Title", "Synopsis", "Body"],
+          attributes: ["testimonyId", "Title", "Synopsis", "Body"],
         },
       ],
     })
