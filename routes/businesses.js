@@ -25,7 +25,7 @@ router.get('/admin', authMiddleware.verify, businessesController.businesses_Admi
 //update your Profile
 router.put('/profile', authMiddleware.verify, businessesController.businesses_profile_update);
 //finds orgs by zip code.
-router.get('/getinvolved', businessesController.businesses_findbyZip);
+router.get('/getinvolved/:ZipCode', businessesController.businesses_findbyZip);
 //admin delete user
 router.get('/admin/deleteuser/:id', businessesController.adminDeleteUser);
 

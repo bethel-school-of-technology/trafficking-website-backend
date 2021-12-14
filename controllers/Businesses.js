@@ -199,21 +199,26 @@ exports.businesses_profile_update = (req, res, next) => {
       });
 };
 exports.businesses_findbyZip = (req, res, next) => {
+  console.log(req.body)
   models.businesses
     .findAll({
-      where: { ZipCode: req.body.ZipCode },
-      attributes: ["ContactName", "OrganizationName", "BusinessURL"],
+      where: { ZipCode: req.params.ZipCode},
+      attributes: ["ContactName", "OrganizationName", "BusinessURL", "ZipCode"],
       include: [
         {
-          model: model.Testimonials,
+          model: models.Testimonials,
           required: false,
           attributes: ["testimonyId", "Title", "Synopsis", "Body"],
         },
       ],
     })
     .then((BusinessesFound) => {
+      console.log(req.body.ZipCode);
       if (BusinessesFound) {
-        res.send(JSON.stringify(BusinessesFound));
+        res.json({
+          message: "Here are businesses",
+          businesses:BusinessesFound
+        })
       } else {
         res.send(
           "There are no organizations that match that have that as their Zip Code."
