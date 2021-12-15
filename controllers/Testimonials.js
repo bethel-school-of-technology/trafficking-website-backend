@@ -144,3 +144,25 @@ exports.testimonials_adminpage_deleted = (req , res , next) => {
     res.send('not authorized')
   }
 }
+
+exports.testimonials_adminpage_untouched = (req,res,next) => {
+  let admin = req.profile.admin;
+  if(admin) {
+    models.Testimonials.findAll({
+      where: {
+        Deleted: false,
+        Declined: null,
+        Approved: null,
+      }
+    }).then(testimonialsFound => {
+      res.json({
+        message: "untouched testimonials",
+        Testimonials: testimonialsFound
+      })
+    })
+  }else{
+    res.json({
+      message: "Not authorized."
+    })
+  }
+}

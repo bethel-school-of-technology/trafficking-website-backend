@@ -13,5 +13,6 @@ router.get('/posts/deleted', authMiddleware.verify, TestimonialsController.testi
 router.get('/posts/:id/approval', authMiddleware.verify, TestimonialsController.Testimonials_AdminApproval);
 router.get('/posts/:id/decline',authMiddleware.verify, TestimonialsController.Testimonials_AdminRejection);
 router.get('/posts/:id/delete', authMiddleware.verify, TestimonialsController.Testimonials_delete);
+router.get('/posts/untouched', authMiddleware.verify, TestimonialsController.testimonials_adminpage_untouched);
 
 module.exports = router;
