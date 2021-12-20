@@ -20,7 +20,7 @@ exports.verify = (req, res, next) => {
    
         }).catch(function(err) {
             console.log(err);
-            res.json({message: "TOken Bad"})
+            res.json({message: "Token Bad"})
         })
     } else {
         res.json({message: "Go away"})

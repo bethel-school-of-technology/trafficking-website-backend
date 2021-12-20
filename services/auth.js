@@ -17,18 +17,8 @@ var authService = {
     return token;
   },
   verifyUser: function (token) {
-    // try {
-        console.log("TRY")
-      let decoded = jwt.verify(token, "secretkey");
-      console.log(decoded)
+    let decoded = jwt.verify(token, "secretkey");
     return models.businesses.findByPk(decoded.UserId);
-  
-    
-    // } catch (err) {
-    //   console.log(err)
-    //   console.log("CATCH")
-    //   return err;
-    // }
   },
   hashPassword: function (plainTextPassword) {
     let salt = bcrypt.genSaltSync(10);
